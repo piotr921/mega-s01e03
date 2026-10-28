@@ -34,3 +34,20 @@ Support desk. Decision records: whoever signed them.
 ---
 
 Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
+
+---
+
+## Build (added for the #4471 split)
+
+The export ships without a build. `package.json` and `vite.config.js` add one: SvelteKit with
+mdsvex, every page in the `runbook` layout, prerendered to `build/`.
+
+```
+npm install
+npm run build     # static site in build/
+npm run preview   # http://localhost:4173/kb
+```
+
+New page: `src/routes/kb/incidents/4471-split/+page.svx` (logic in `src/lib/kb/split.ts`,
+table in `src/lib/kb/SplitTable.svelte`). `rendered/` holds it as the desk sees it: a
+single-file HTML render and a screenshot.

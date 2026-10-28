@@ -1,0 +1,63 @@
+---
+layout: runbook
+title: '#4471 split · three problems, not one'
+owner: Piotr Sekula
+status: open
+reviewed: 2026-10-28
+signature: Piotr Sekula
+---
+
+<script>
+  import SplitTable from '#lib/kb/SplitTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const tickets = {
+    parser: 'https://github.com/piotr921/mega-s01e03/issues/1',
+    hint: 'https://github.com/piotr921/mega-s01e03/issues/2',
+    shift: 'https://github.com/piotr921/mega-s01e03/issues/3',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) says one issue, one fix queued. Its reports say otherwise: they describe
+three problems, and the queued parser fix closes one of them.
+
+<Callout kind="warn">
+#4471 is not one bug. Fixing the parser leaves the booking-v3 date hint and the one-day shift open.
+</Callout>
+
+## The split
+
+<SplitTable ticket={4471} {tickets} />
+
+## What each problem is
+
+- **`parser`**: the shared parser reads every date month first. Every tenant on file writes the day
+  first, so any date with a day up to 12 comes out with day and month swapped. This is the bug
+  #4471 is named for.
+- **`hint`**: the booking-v3 form prints `MM/DD/YYYY` under its date field. People type month
+  first because the form tells them to, and the form reads the date the tenant's way, day first. It
+  happens only through the form, only at booking-v3 tenants. The parser fix does not touch it; the
+  hint or the form's read order must change.
+- **`shift`**: the date moves by one day, not a day/month swap. The same meeting shows Tuesday in
+  Lisbon and Monday in Toronto; an invite arrives before the booking. This reads as timezone
+  handling. The desk noted these reports (`desk-notes.json`) but filed them under `parser` by
+  tenant, so they had no ticket.
+
+## How the reports were counted
+
+- The export repeats some rows where its pages overlap: one id, one report.
+- Each report is placed by its tenant's locale and booking form and its channel
+  (`#lib/kb/causes.ts`), not by intake's tag. Intake tags follow the reporter's browser and
+  disagree with the cause on both sides.
+- Reports the desk read as a one-day move get their own cause (`#lib/kb/split.ts`).
+- Every number on this page is computed from `reports-4471.json` at render time.
+
+## Why they ended up in one ticket
+
+[Decision 0001](/kb/decisions/0001-dedupe-by-subject) merges on subject line alone. All three
+problems arrive under the same subjects ("Wrong day on the invite", "Dates mixed up"), so subject
+matching cannot keep them apart. Split by cause, as the [triage explorer](/kb/triage/dedupe)
+already does, before marking a big ticket known.
+
+<RenderStamp {signature} />
