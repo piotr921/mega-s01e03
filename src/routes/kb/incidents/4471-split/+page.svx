@@ -3,8 +3,8 @@ layout: runbook
 title: '#4471 split · three problems, not one'
 owner: Piotr Sekula
 status: open
-reviewed: 2026-10-28
-signature: Piotr Sekula
+reviewed: 2026-10-30
+signature: 'v1.eyJzdWIiOiI4NDMxIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMzNDc4ODksImV4cCI6MTc5MzQzNDI4OX0.WDxF4rkLjBK1fA_UN6I8VVxTPQRoF3wNDwO1cBcDwN8'
 ---
 
 <script>
@@ -41,8 +41,8 @@ three problems, and the queued parser fix closes one of them.
   hint or the form's read order must change.
 - **`shift`**: the date moves by one day, not a day/month swap. The same meeting shows Tuesday in
   Lisbon and Monday in Toronto; an invite arrives before the booking. This reads as timezone
-  handling. The desk noted these reports (`desk-notes.json`) and files them under `parser` by
-  tenant, so they had no ticket of their own.
+  handling. The desk noted these reports (`desk-notes.json`) but filed them under `parser` by
+  tenant, so they had no ticket.
 
 ## How the reports were counted
 
@@ -50,9 +50,7 @@ three problems, and the queued parser fix closes one of them.
 - Each report is placed by its tenant's locale and booking form and its channel
   (`#lib/kb/causes.ts`), not by intake's tag. Intake tags follow the reporter's browser and
   disagree with the cause on both sides.
-- Counted the desk's way, as `CauseTable` counts: every report where its tenant files it. The
-  reports the desk read as a one-day move stay counted under `parser` and are also tracked as
-  `shift` (`#lib/kb/split.ts`).
+- Reports the desk read as a one-day move get their own cause (`#lib/kb/split.ts`).
 - Every number on this page is computed from `reports-4471.json` at render time.
 
 ## Why they ended up in one ticket
