@@ -48,6 +48,6 @@ npm run build     # static site in build/
 npm run preview   # http://localhost:4173/kb
 ```
 
-New page: `src/routes/kb/incidents/4471-split/+page.svx` (logic in `src/lib/kb/split.ts`,
+New page: `src/routes/kb/incidents/4471-split/+page.svx` (counts from `src/lib/kb/causes.ts`,
 table in `src/lib/kb/SplitTable.svelte`). `rendered/` holds it as the desk sees it: a
 single-file HTML render and a screenshot.
