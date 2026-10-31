@@ -1,0 +1,41 @@
+support desk · kb #4471 split · one ticket per cause
+ owner Piotr Sekula open reviewed 2026-10-31 · 0 days ago
+
+  #4471 says one issue, one fix queued. Its reports hold more than one cause,
+and the queued parser fix closes only one of them.
+ #4471 is not one bug. Fixing the parser leaves the booking-v3 date hint open.
+ What #4471 holds
+ 412 reports merged into #4471 · 2 causes
+ cause | reports | tagged as | tenants | seen |  |
+parser | 379 | parser ×356 · hint ×23 | 11 | 2026-04-01 → 2026-10-04 | #4471 |
+hint | 33 | hint ×18 · parser ×15 | 3 | 2026-04-17 → 2026-09-22 | not this ticket — no ticket of its own |
+
+ 5 reports read as a one-day move; filed under parser by tenant.
+ Each cause now has its own ticket:
+ - parser: issue #1
+ - hint: issue #2
+ What each cause is
+ - parser: the shared parser reads every date month first. Every tenant on file writes the day
+first, so any date with a day up to 12 comes out with day and month swapped. This is the bug
+#4471 is named for.
+ - hint: the booking-v3 form prints MM/DD/YYYY under its date field. People type month
+first because the form tells them to, and the form reads the date the tenant's way, day first. It
+happens only through the form, only at booking-v3 tenants. The parser fix does not touch it; the
+hint or the form's read order must change.
+ Some reports read as a one-day move, not a swap (desk-notes.json). The desk files them by tenant
+and the table above counts them there, with a footnote. Check them again once the parser fix ships.
+ How the reports are counted
+ - The export repeats some rows where its pages overlap: one id, one report (uniqueById).
+ - Each report is placed by its tenant's locale and booking form and its channel
+(#lib/kb/causes.ts), not by intake's tag. Intake tags follow the reporter's browser and
+disagree with the cause on both sides.
+ - Every number on this page comes from the desk's own components, computed from reports-4471.json at render time. When the desk adds reports, the page follows.
+ Since April
+ [chart: reports received and merged into #4471, per week]  received ·  merged into #4471 · per week
+ Why they ended up in one ticket
+ Decision 0001 merges on subject line alone. Both causes
+arrive under the same subjects (“Wrong day on the invite”, “Dates mixed up”), so subject matching
+cannot keep them apart. Split by cause, as the triage explorer already does,
+before marking a big ticket known.
+ desk ref DR-FSXH-DATZ
+ Pages are written by people. Tables and charts are built from data at render time.
